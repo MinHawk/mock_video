@@ -1,0 +1,95 @@
+<%inherit file="../base.html"/>
+<%!
+    from django.shortcuts import reverse
+    from apps.model.video import RuleIdentity
+%>
+<%def name="content()">
+<h3>${video.name}</h3>
+<a class="btn btn-info external-create" href="${reverse('external_video')}">返回</a>
+<h4>集数</h4>
+<div class="wrapper" id="video-sub-area">
+    <h5>查看与编辑</h5>
+    % if video.from_to == 'custom':
+    <form enctype="multipart/form-data" class="form-horizontal video_form" method="POST">
+    % else:
+    <form class="form-horizontal video_form" method="POST">
+    % endif
+        ${csrf_token}
+        <div class="form-group">
+            <label for="externalVideoNumber" class="col-sm-2 control-label">集数</label>
+            <div class="col-sm-7">
+                <input name="number" type="number" class="form-control" id="externalVideoNumber" placeholder="请输入集数">
+            </div>
+        </div>
+        <div class="form-group video_rule_type">
+            <label for="externalVideoUrl" class="col-sm-2 control-label">添加地址</label>
+            <div class="col-sm-7">
+                % if video.from_to != 'custom':
+                <input name="url" type="text" class="form-control" id="externalVideoUrl" placeholder="请添加视频地址">
+                % else:
+                <input name="url" type="file" class="form-control" id="externalVideoUrl">
+                % endif
+            </div>
+            <input type="hidden" name="sub_id" id="sub_input_id">
+            <button type="submit" class="btn btn-info col-sm-2">添加</button>
+        </div>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>集数</th>
+            <th>地址</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        %for subs in video.video_sub.all():
+        <tr>
+            <td><a href="${subs.url}">第${subs.number}集</a></td>
+            <td><p class="url_info">${subs.url}</p></td>
+            <td>
+                <a class="btn btn-default" href="${subs.url}">查看</a>
+                <a class="btn btn-default update-btn" href="#" data-id="${subs.id}" data-url="${subs.url}" data-number="${subs.number}">编辑</a>
+                <a class="btn btn-default" href="${reverse('sub_remove', kwargs={'video_sub_id':subs.id ,'video_id': video.id})}">删除</a>
+            </td>
+        </tr>
+        % endfor
+    </tbody>
+</table>
+<h4>演职员表</h4>
+<ul>
+    %for stars in video.video_star.all():
+    <li><a href="${reverse('star_remove', kwargs={'star_id':stars.id ,'video_id': video.id})}">${stars.name}：${RuleIdentity[stars.identity].label}</a></li>
+    %endfor
+</ul>
+<div class="wrapper" id="video-rule-area">
+    <form class="form-horizontal video_form" action="${reverse('external_video_star')}" method="POST">
+        ${csrf_token}
+        <div class="form-group">
+            <label for="externalVideoRule" class="col-sm-2 control-label">演职员</label>
+            <div class="col-sm-7">
+                <input name="name" type="text" class="form-control" id="externalVideoRule" placeholder="请输入演员姓名">
+            </div>
+        </div>
+        <div class="form-group video_rule_type">
+            <label for="externalVideoIdentity" class="col-sm-2 control-label">身份</label>
+            <div class="col-sm-7">
+                <select name="identity" class="form-control" id="externalVideoIdentity">
+                    %for identity in RuleIdentity:
+                    <option  value="${identity.value}">${identity.label}</option>
+                    %endfor
+                </select>
+            </div>
+            <input type="hidden" value="${video.id}" name="video_sub_id">
+            <button type="submit" class="btn btn-info col-sm-2">提交</button>
+        </div>
+    </form>
+</div>
+</%def>
+<%def name="css()">
+    <link rel="stylesheet" href="/static/dashboard/css/external_video_sub.css">
+</%def>
+<%def name="js()">
+    <script src="/static/dashboard/js/external_video_sub.js"></script>
+</%def>

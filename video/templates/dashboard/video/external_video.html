@@ -1,0 +1,153 @@
+<%inherit file="../base.html"/>
+<%!
+    from django.shortcuts import reverse
+    from apps.model.video import VideoType, FromTo, NotionType
+%>
+<%def name="content()">
+<h3>外部视频</h3>
+<button class="btn btn-info external-create" id="show_video_create_btn">新建</button><span>${error}</span>
+<!--<<a class="btn btn-info external-create" href="#">新建</a>-->
+<div class="wrapper" id="video-edit-area">
+    <form class="form-horizontal video_form" action="${reverse('external_video')}" method="POST">
+        ${csrf_token}
+        <div class="form-group">
+            <label for="externalVideoFrom" class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-10">
+                <input name="name" type="text" class="form-control" id="externalVideoName" placeholder="请输入视频名称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="externalVideoFrom" class="col-sm-2 control-label">海报</label>
+            <div class="col-sm-10">
+                <input name="image" type="text" class="form-control" id="externalVideoLink" placeholder="请输入视频海报链接">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="externalVideoType" class="col-sm-2 control-label">类型</label>
+            <div class="col-sm-10">
+                <select name="videotype" class="form-control" id="externalVideoType" required>
+                    % for item in VideoType:
+                    <option  value="${item.value}">${item.label}</option>
+                    % endfor
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="externalVideoFrom"  class="col-sm-2 control-label">来源</label>
+            <div class="col-sm-10">
+                <select name="fromto" class="form-control" id="externalVideoFrom" required>
+                    % for item in FromTo:
+                    <option  value="${item.value}">${item.label}</option>
+                    % endfor
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="externalVideoNotionality"  class="col-sm-2 control-label">国家</label>
+            <div class="col-sm-10">
+                <select name="nation" class="form-control" id="externalVideoNotionality" required>
+                    % for item in NotionType:
+                    <option  value="${item.value}">${item.label}</option>
+                    % endfor
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="externalVideoInfo"  class="col-sm-2 control-label">说明</label>
+            <div class="col-sm-10">
+                <textarea name="videoinfo" class="form-control" id="externalVideoInfo" placeholder="说明"></textarea>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-info external-submit">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<h5>外链视频</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>链接</th>
+            <th>类型</th>
+            <th>来源</th>
+            <th>国家</th>
+            <th>说明</th>
+            <th>状态</th>
+            <th>创建时间</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        % for video in ex_video:
+        <tr>
+            <td>${video.id}</td>
+            <td>${video.name}</td>
+            <td><img src="${video.image}" class="video-image"></td>
+            <td>${VideoType[video.video_type].label}</td>
+            <td>${FromTo[video.from_to].label}</td>
+            <td>${NotionType[video.notions].label}</td>
+            <td><p class="video-info">${video.info}</p></td>
+            <td>${video.status}</td>
+            <td>${video.create_time}</td>
+            <td>${video.update_time}</td>
+            <td>
+                <a href="${reverse('video_update', kwargs={'video_id': video.id})}">编辑</a>
+                <a href="${reverse('external_video_sub', kwargs={'video_id':video.id})}">详情</a>
+                <a href="${reverse('video_status', kwargs={'video_id':video.id})}">状态</a>
+            </td>
+        </tr>
+        % endfor
+    </tbody>
+</table>
+<h5>自制视频</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>链接</th>
+            <th>类型</th>
+            <th>来源</th>
+            <th>国家</th>
+            <th>说明</th>
+            <th>状态</th>
+            <th>创建时间</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        % for video in cu_video:
+        <tr>
+            <td>${video.id}</td>
+            <td>${video.name}</td>
+            <td><img src="${video.image}" class="video-image"></td>
+            <td>${VideoType[video.video_type].label}</td>
+            <td>${FromTo[video.from_to].label}</td>
+            <td>${NotionType[video.notions].label}</td>
+            <td><p class="video-info">${video.info}</p></td>
+            <td>${video.status}</td>
+            <td>${video.create_time}</td>
+            <td>${video.update_time}</td>
+            <td>
+                <a href="${reverse('video_update', kwargs={'video_id': video.id})}">编辑</a>
+                <a href="${reverse('external_video_sub', kwargs={'video_id':video.id})}">详情</a>
+                <a href="${reverse('video_status', kwargs={'video_id':video.id})}">状态</a>
+            </td>
+        </tr>
+        % endfor
+    </tbody>
+</table>
+</%def>
+<%def name="css()">
+    <link rel="stylesheet" href="/static/dashboard/css/external_video.css">
+</%def>
+<%def name="js()">
+    <script src="/static/dashboard/js/external_video.js"></script>
+</%def>

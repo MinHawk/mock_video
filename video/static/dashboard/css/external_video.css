@@ -1,0 +1,26 @@
+.wrapper {
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    display: none;
+}
+.external-create {
+    margin-bottom: 20px;
+    width: 80px;
+}
+.external-submit {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+}
+.video-image {
+    width: 40px;
+}
+.video-info {
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

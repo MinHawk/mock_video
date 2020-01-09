@@ -1,0 +1,13 @@
+
+.subvideo-img {
+    width: 50%;
+}
+.subvideo-desc {
+    padding: 10px;
+}
+.contain-sub {
+    margin-bottom: 10px;
+}
+.num li {
+    display: inline-block;
+}

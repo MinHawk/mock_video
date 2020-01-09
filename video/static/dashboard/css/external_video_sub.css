@@ -1,0 +1,32 @@
+.wrapper {
+    width: 50%;
+    padding: 10px 0 10px 0;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+}
+.form-group {
+    margin-bottom: 0px;
+}
+.external-create {
+    margin-bottom: 20px;
+    width: 80px;
+}
+.external-submit {
+    display: inline-block;
+}
+#video-rule-area {
+    margin-top: 10px;
+}
+.video_rule_type {
+    margin-top: 10px;
+}
+.url_info {
+    display: inline-block;
+    width: 320px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+li {
+    display: inline-block;
+}
